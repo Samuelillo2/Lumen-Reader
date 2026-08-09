@@ -125,6 +125,15 @@
   .dl-notes{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;margin-top:24px;font-size:.85rem;font-weight:600;color:rgba(255,255,255,.88)}
   .dl-notes span{display:inline-flex;align-items:center;gap:7px}
 
+  /* Highlight (biblioteca sin dueño) */
+  #highlight .wrap{position:relative}
+  #highlight{position:relative;overflow:hidden}
+  #highlight::before{content:"";position:absolute;inset:0;background:
+    linear-gradient(135deg,color-mix(in srgb,var(--accent) 9%,transparent),
+    color-mix(in srgb,var(--accent-2) 9%,transparent));pointer-events:none}
+  #highlight .wrap{position:relative}
+  #highlight .meta-line{max-width:900px}
+
   /* FAQ */
   .faq{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
   .qa{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 24px;box-shadow:var(--shadow-soft)}
@@ -160,12 +169,13 @@
       <nav class="nav-links">
         <a href="#about" data-i18n="nav_about">Qué es</a>
         <a href="#features" data-i18n="nav_features">Funciones</a>
+        <a href="#highlight" data-i18n="nav_highlight">Biblioteca</a>
         <a href="#screenshots" data-i18n="nav_shots">Pantallas</a>
         <a href="#faq" data-i18n="nav_faq">Preguntas</a>
       </nav>
       <button class="icon-btn" id="theme-toggle" title="Modo claro/oscuro" aria-label="Modo claro/oscuro">🌙</button>
       <button class="icon-btn" id="lang-toggle" title="Cambiar idioma" aria-label="Cambiar idioma">🌐</button>
-      <a class="btn-dl-sm" href="#download" data-i18n="dl_short">Descargar</a>
+      <a class="btn-dl-sm" href="#download" data-i18n="dlShort">Descargar</a>
     </div>
   </div>
 </header>
@@ -199,7 +209,9 @@
     <div class="phone-wrap">
       <div class="phone">
         <div class="ph-bar"></div>
-        <div class="ph-tile wide" id="phone-title">Lumen</div>
+        <div class="ph-tile wide" id="phone-title" style="background:transparent;border:none;height:150px;padding:0">
+          <img src="images/lumo-hero.png" alt="Lumo" style="width:150px;height:150px;object-fit:contain">
+        </div>
         <div class="ph-chips" id="phone-chips"></div>
         <div class="ph-rows">
           <div class="r w75"></div><div class="r w50"></div><div class="r w75"></div><div class="r w50"></div>
@@ -215,10 +227,22 @@
      ============================================================ -->
 <section id="about" style="background:var(--bg-2);border-top:1px solid var(--line)">
   <div class="wrap">
-    <div class="sec-tag" data-i18n="about_tag">¿Qué es Lumen Reader?</div>
+    <div class="sec-tag" data-i18n="aboutTag">¿Qué es Lumen Reader?</div>
     <h2 id="about-title"></h2>
     <p class="lead" id="about-text"></p>
     <div class="meta-line" id="about-points"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     DESTACADO: BIBLIOTECA SIN DUEÑO
+     ============================================================ -->
+<section id="highlight" style="background:var(--bg-2);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-tag" id="highlight-tag"></div>
+    <h2 id="highlight-title"></h2>
+    <p class="lead" id="highlight-text"></p>
+    <div class="meta-line" id="highlight-points"></div>
   </div>
 </section>
 
@@ -227,7 +251,7 @@
      ============================================================ -->
 <section id="features">
   <div class="wrap">
-    <div class="sec-tag" data-i18n="features_tag">Funciones</div>
+    <div class="sec-tag" data-i18n="featuresTag">Funciones</div>
     <h2 id="features-title"></h2>
     <p class="lead" id="features-sub"></p>
     <div class="features" id="features-grid"></div>
@@ -239,7 +263,7 @@
      ============================================================ -->
 <section id="screenshots" style="background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="wrap">
-    <div class="sec-tag" data-i18n="shots_tag">Pantallas</div>
+    <div class="sec-tag" data-i18n="shotsTag">Pantallas</div>
     <h2 id="shots-title"></h2>
     <p class="lead" id="shots-sub"></p>
     <div class="shots" id="shots-grid"></div>
@@ -252,7 +276,7 @@
 <section id="download">
   <div class="wrap">
     <div class="dl-cta">
-      <div class="sec-tag" style="color:rgba(255,255,255,.8)" data-i18n="dl_tag">Descargar</div>
+      <div class="sec-tag" style="color:rgba(255,255,255,.8)" data-i18n="dlTag">Descargar</div>
       <h2 id="dl-title"></h2>
       <p class="lead" id="dl-sub"></p>
       <a class="btn-dl white" id="dl-btn" href="#" target="_blank" rel="noopener">
@@ -269,7 +293,7 @@
      ============================================================ -->
 <section id="faq">
   <div class="wrap">
-    <div class="sec-tag" style="text-align:center" data-i18n="faq_tag">Ayuda</div>
+    <div class="sec-tag" style="text-align:center" data-i18n="faqTag">Ayuda</div>
     <h2 style="text-align:center" id="faq-title"></h2>
     <div class="faq" id="faq-list"></div>
   </div>
@@ -315,27 +339,42 @@ const CONFIG = {
     badge: "Tu lectura con inteligencia",
     heroTitle: "Tu lectura, con inteligencia artificial",
     heroSub: "Notificaciones inteligentes, vocabulario, gamificación y tu mascota Lumo. Todo en tu dispositivo, sin servidores y sin perder tu privacidad.",
-    heroMeta: ["100% en tu dispositivo","Sin publicidad","Gratis","Android"],
+    nav_about: "Qué es",
+    nav_features: "Funciones",
+    nav_highlight: "Biblioteca",
+    nav_shots: "Pantallas",
+    nav_faq: "Preguntas",
+    heroMeta: ["100% en tu dispositivo","IA local y privada","Biblioteca sin dueño","Android"],
     phoneLabel: "Lumen",
-    phoneChips: ["⚡ Energía","🎯 Meta diaria","🏅 XP"],
+    phoneChips: ["⚡ Energía","🎯 Meta diaria","🏅 XP","🐉 Lumo"],
     dlBtn: "Descargar app",
     tgBtn: "Telegram",
     premBtn: "Versión Premium",
     dlShort: "Descargar",
     aboutTag: "¿Qué es Lumen Reader?",
     aboutTitle: "Una app que convierte la lectura en un hábito inteligente",
-    aboutText: "Lumen Reader es tu app de lectura con inteligencia artificial que funciona 100% en tu dispositivo: aprende tu horario para recordarte leer, te acompaña con la mascota Lumo, te ayuda a ampliar vocabulario y te motiva con gamificación. Sin servidores, sin publicidad y sin perder tu privacidad.",
-    aboutPoints: ["IA local y privada","Mascota que crece contigo","Vocabulario y diccionario","Páginas escaneadas (OCR)","Logros, misiones y rachas","Diseño cómodo para leer"],
+    aboutText: "Lumen Reader es un lector de libros para Android que reúne tres cosas en una: un lector completo (EPUB, PDF, DOCX) con inteligencia artificial y reconocimiento 100 % local; una experiencia que convierte la lectura en hábito con la mascota Lumo, XP, logros y rachas; y una biblioteca global descentralizada sin servidor central, donde los libros se comparten entre pares y los autores reciben el 50 % de los ingresos de sus anuncios.",
+    aboutPoints: ["Lector EPUB, PDF y DOCX","IA y OCR en tu dispositivo","Repaso de vocabulario con FSRS","Multi-IA: Gemini, ChatGPT, Claude y más","Biblioteca descentralizada (Nostr + P2P)","Mascota Lumo, logros y rachas"],
+    highlightTag: "La biblioteca sin dueño",
+    highlightTitle: "Una biblioteca global sin servidor central",
+    highlightText: "Lumen Reader no depende de ninguna plataforma. Los libros se publican y comparten entre pares con Nostr y BitTorrent, con la firma del autor y enlaces con QR. La app pesa 25 MB; la biblioteca puede crecer sin límite. Y como autor, te llevas el 50 % de los ingresos de tus propios anuncios.",
+    highlightPoints: ["Catálogo en relays públicos (Nostr)","Libros compartidos P2P desde tu móvil","Formato LumenBook con firma del autor","Vitrina web propia para cada autor","Enlaces y QR: lumenreader://b/<id>","Modelo 50/50 para autores y lectores"],
     featuresTag: "Funciones",
     featuresTitle: "Todo para que leas mejor",
-    featuresSub: "Lumen Reader reúne inteligencia artificial, motivación y conocimiento en una sola app. Todo funciona en tu dispositivo.",
+    featuresSub: "Lumen Reader reúne lector, inteligencia artificial, motivación y una biblioteca descentralizada en una sola app. Todo funciona en tu dispositivo.",
     features: [
-      { emoji:"🧠", titulo:"IA en tu dispositivo", texto:"Todo el aprendizaje de IA corre local: sin servidores y sin enviar tus datos." },
-      { emoji:"🔔", titulo:"Notificaciones inteligentes", texto:"La app aprende tu horario y te recuerda leer en el momento justo." },
-      { emoji:"🐉", titulo:"Mascota Lumo", texto:"Tu mascota crece contigo: energía, evolución y una habitación que se llena de libros." },
-      { emoji:"🏆", titulo:"Gamificación", texto:"XP, niveles, logros, misiones y rachas que convierten la lectura en un hábito." },
-      { emoji:"🔤", titulo:"Vocabulario", texto:"Marca palabras desconocidas y obtén definiciones al instante, en varios idiomas." },
-      { emoji:"🔎", titulo:"OCR integrado", texto:"Reconoce texto en páginas escaneadas y PDF-imagen para leer y buscar en ellas." }
+      { emoji:"📖", titulo:"Lector completo", texto:"EPUB, PDF y DOCX con tipografía, tema, luz azul, modos vertical/horizontal, zoom y gestos." },
+      { emoji:"🗣️", titulo:"Lectura en voz alta (TTS)", texto:"Voces en varios idiomas, velocidad ajustable y control desde la pantalla bloqueada." },
+      { emoji:"🔎", titulo:"OCR en tu dispositivo", texto:"Reconoce texto en páginas escaneadas e imágenes, con traducción paralela integrada." },
+      { emoji:"🤖", titulo:"Multi-IA integrada", texto:"Gemini, ChatGPT, Claude, Groq y Mistral para explicar, resumir o traducir lo que leas." },
+      { emoji:"🧠", titulo:"IA local y privada", texto:"Notificaciones que aprenden tu horario y análisis de vocabulario, todo sin servidores." },
+      { emoji:"🔤", titulo:"Vocabulario con FSRS", texto:"Diccionarios offline en 6 idiomas y repaso espaciado estilo Anki para retener lo aprendido." },
+      { emoji:"🎓", titulo:"Modo Academia", texto:"Detecta citas APA, numéricas y DOI en tus textos, y exporta bibliografía en BibTeX/RIS." },
+      { emoji:"🖼️", titulo:"Citas para redes", texto:"Convierte frases en imágenes bonitas con QR listas para compartir." },
+      { emoji:"🐉", titulo:"Mascota Lumo", texto:"Evoluciona de Bebé a Guardián de la Biblioteca; gana energía y monedas leyendo." },
+      { emoji:"🏆", titulo:"Gamificación", texto:"10 niveles, logros, misiones diarias y rachas que convierten la lectura en un hábito." },
+      { emoji:"🌐", titulo:"Biblioteca descentralizada", texto:"Un catálogo global en Nostr con libros P2P, firma del autor y sin servidor central." },
+      { emoji:"☁️", titulo:"Respaldo en la nube", texto:"Copia en Google Drive, Proton o WebDAV; cambia de teléfono sin perder tu progreso." }
     ],
     shotsTag: "Pantallas",
     shotsTitle: "Así se ve Lumen Reader",
@@ -347,10 +386,12 @@ const CONFIG = {
     faqTag: "Ayuda",
     faqTitle: "Preguntas frecuentes",
     faq: [
-      { q:"¿Lumen Reader envía mis datos?", a:"No. Toda la inteligencia y el reconocimiento funcionan en tu dispositivo. No hay servidores ni se sube tu información." },
+      { q:"¿Lumen Reader envía mis datos?", a:"No. Toda la inteligencia, el OCR y el análisis de vocabulario funcionan en tu dispositivo. No hay servidores propios que reciban tu información." },
       { q:"¿En qué dispositivos funciona?", a:"Lumen Reader está diseñada para Android y se instala como un APK directamente en tu teléfono o tableta." },
-      { q:"¿Tiene costo?", a:"Es gratuita y sin publicidad. También hay una versión Premium con contenido y ventajas adicionales." },
-      { q:"¿Puedo leer PDF e imágenes escaneadas?", a:"Sí. La app incluye reconocimiento óptico (OCR) para leer, buscar y resaltar texto en páginas escaneadas." }
+      { q:"¿Qué formatos puedo leer?", a:"EPUB, PDF, DOCX y otros. Además puedes leer páginas escaneadas gracias al OCR integrado." },
+      { q:"¿Tiene costo?", a:"Es gratuita y completa. Hay una versión Premium con ventajas adicionales (sin anuncios, temas exclusivos, copia en la nube, etc.)." },
+      { q:"¿Qué es la biblioteca descentralizada?", a:"Es un catálogo global que vive en relays públicos de Nostr y se comparte entre pares con BitTorrent, sin servidor central y con la firma de cada autor." },
+      { q:"¿Puedo publicar mis propios libros?", a:"Sí. La app te permite publicar en la biblioteca global, gestionar tus publicaciones y generar tu propia vitrina web, además de recibir el 50 % de los anuncios." }
     ],
     footCopyright: "© {year} Lumen Reader. Todos los derechos reservados.",
     footPrivacy: "Tu privacidad primero: toda la inteligencia funciona en tu dispositivo, sin servidores."
@@ -361,27 +402,42 @@ const CONFIG = {
     badge: "Your reading, made intelligent",
     heroTitle: "Your reading, powered by AI",
     heroSub: "Smart notifications, vocabulary, gamification and your pet Lumo. All on your device, no servers and no loss of privacy.",
-    heroMeta: ["100% on-device","No ads","Free","Android"],
+    nav_about: "What is it",
+    nav_features: "Features",
+    nav_highlight: "Library",
+    nav_shots: "Screens",
+    nav_faq: "FAQ",
+    heroMeta: ["100% on-device","Local & private AI","Ownerless library","Android"],
     phoneLabel: "Lumen",
-    phoneChips: ["⚡ Energy","🎯 Daily goal","🏅 XP"],
+    phoneChips: ["⚡ Energy","🎯 Daily goal","🏅 XP","🐉 Lumo"],
     dlBtn: "Download app",
     tgBtn: "Telegram",
     premBtn: "Get Premium",
     dlShort: "Download",
     aboutTag: "What is Lumen Reader?",
     aboutTitle: "An app that turns reading into a smart habit",
-    aboutText: "Lumen Reader is your reading app with AI that works 100% on your device: it learns your schedule to remind you to read, keeps you company with your pet Lumo, helps you grow your vocabulary and motivates you with gamification. No servers, no ads and no loss of privacy.",
-    aboutPoints: ["Local & private AI","A pet that grows with you","Vocabulary & dictionary","Scanned pages (OCR)","Achievements, quests & streaks","Comfortable reading design"],
+    aboutText: "Lumen Reader is an Android ebook reader that brings three things together: a complete reader (EPUB, PDF, DOCX) with 100% on-device AI and recognition; an experience that turns reading into a habit with your pet Lumo, XP, achievements and streaks; and a decentralized global library with no central server, where books are shared peer-to-peer and authors keep 50% of their ad revenue.",
+    aboutPoints: ["EPUB, PDF & DOCX reader","On-device AI & OCR","FSRS vocabulary review","Multi-AI: Gemini, ChatGPT, Claude & more","Decentralized library (Nostr + P2P)","Pet Lumo, achievements & streaks"],
+    highlightTag: "The ownerless library",
+    highlightTitle: "A global library with no central server",
+    highlightText: "Lumen Reader depends on no platform. Books are published and shared peer-to-peer with Nostr and BitTorrent, signed by the author and linked with QR codes. The app weighs 25 MB; the library can grow without limit. And as an author, you keep 50% of the revenue from your own ads.",
+    highlightPoints: ["Catalog on public relays (Nostr)","Books shared P2P from your phone","LumenBook format with author signature","Your own web showcase as an author","Links & QR: lumenreader://b/<id>","50/50 model for authors and readers"],
     featuresTag: "Features",
     featuresTitle: "Everything to help you read better",
-    featuresSub: "Lumen Reader brings together artificial intelligence, motivation and knowledge in a single app. Everything runs on your device.",
+    featuresSub: "Lumen Reader brings together a reader, artificial intelligence, motivation and a decentralized library in a single app. Everything runs on your device.",
     features: [
-      { emoji:"🧠", titulo:"AI on your device", texto:"All AI learning runs locally: no servers and no data leaving your phone." },
-      { emoji:"🔔", titulo:"Smart notifications", texto:"The app learns your schedule and reminds you to read at the right time." },
-      { emoji:"🐉", titulo:"Pet Lumo", texto:"Your pet grows with you: energy, evolution and a room that fills with books." },
-      { emoji:"🏆", titulo:"Gamification", texto:"XP, levels, achievements, quests and streaks that turn reading into a habit." },
-      { emoji:"🔤", titulo:"Vocabulary", texto:"Mark unknown words and get definitions instantly, in several languages." },
-      { emoji:"🔎", titulo:"Built-in OCR", texto:"Recognizes text in scanned pages and image-PDFs to read and search in them." }
+      { emoji:"📖", titulo:"Full reader", texto:"EPUB, PDF and DOCX with typography, themes, blue-light filter, vertical/horizontal modes, zoom and gestures." },
+      { emoji:"🗣️", titulo:"Text-to-speech (TTS)", texto:"Voices in several languages, adjustable speed and controls from the lock screen." },
+      { emoji:"🔎", titulo:"On-device OCR", texto:"Recognizes text in scanned pages and images, with built-in parallel translation." },
+      { emoji:"🤖", titulo:"Multi-AI integrated", texto:"Gemini, ChatGPT, Claude, Groq and Mistral to explain, summarize or translate what you read." },
+      { emoji:"🧠", titulo:"Local & private AI", texto:"Notifications that learn your schedule and vocabulary analysis, all without servers." },
+      { emoji:"🔤", titulo:"FSRS vocabulary", texto:"Offline dictionaries in 6 languages and spaced repetition (Anki-style) to retain what you learn." },
+      { emoji:"🎓", titulo:"Academic mode", texto:"Detects APA, numeric and DOI citations in your texts, and exports bibliographies in BibTeX/RIS." },
+      { emoji:"🖼️", titulo:"Quotes for social", texto:"Turn phrases into beautiful images with QR codes, ready to share." },
+      { emoji:"🐉", titulo:"Pet Lumo", texto:"Evolves from Baby to Guardian of the Library; earn energy and coins by reading." },
+      { emoji:"🏆", titulo:"Gamification", texto:"10 levels, achievements, daily quests and streaks that turn reading into a habit." },
+      { emoji:"🌐", titulo:"Decentralized library", texto:"A global catalog on Nostr with P2P books, author signature and no central server." },
+      { emoji:"☁️", titulo:"Cloud backup", texto:"Backup to Google Drive, Proton or WebDAV; switch phones without losing progress." }
     ],
     shotsTag: "Screens",
     shotsTitle: "Meet Lumen Reader",
@@ -393,10 +449,12 @@ const CONFIG = {
     faqTag: "Help",
     faqTitle: "Frequently asked questions",
     faq: [
-      { q:"Does Lumen Reader send my data?", a:"No. All the intelligence and recognition runs on your device. There are no servers and your information is never uploaded." },
+      { q:"Does Lumen Reader send my data?", a:"No. All the AI, OCR and vocabulary analysis run on your device. There are no servers of our own that receive your information." },
       { q:"Which devices does it work on?", a:"Lumen Reader is designed for Android and installs as an APK directly on your phone or tablet." },
-      { q:"Does it cost anything?", a:"It is free and ad-free. There is also a Premium version with extra content and benefits." },
-      { q:"Can I read PDFs and scanned images?", a:"Yes. The app includes optical recognition (OCR) to read, search and highlight text in scanned pages." }
+      { q:"Which formats can I read?", a:"EPUB, PDF, DOCX and more. You can also read scanned pages thanks to the built-in OCR." },
+      { q:"Does it cost anything?", a:"It is free and complete. There is a Premium version with extra benefits (no ads, exclusive themes, cloud backup, etc.)." },
+      { q:"What is the decentralized library?", a:"It is a global catalog that lives on public Nostr relays and is shared peer-to-peer with BitTorrent, with no central server and each author's signature." },
+      { q:"Can I publish my own books?", a:"Yes. The app lets you publish to the global library, manage your publications and generate your own web showcase, while keeping 50% of the ad revenue." }
     ],
     footCopyright: "© {year} Lumen Reader. All rights reserved.",
     footPrivacy: "Privacy first: all the intelligence runs on your device, with no servers."
@@ -475,6 +533,12 @@ const CONFIG = {
     $("about-title").textContent = T.aboutTitle;
     $("about-text").textContent = T.aboutText;
     $("about-points").innerHTML = (T.aboutPoints||[]).map(p=>`<span><span class="chk">✓</span> ${p}</span>`).join("");
+
+    // Highlight (biblioteca sin dueño)
+    $("highlight-tag").textContent = T.highlightTag;
+    $("highlight-title").textContent = T.highlightTitle;
+    $("highlight-text").textContent = T.highlightText;
+    $("highlight-points").innerHTML = (T.highlightPoints||[]).map(p=>`<span><span class="chk">✓</span> ${p}</span>`).join("");
 
     // Features
     $("features-title").textContent = T.featuresTitle;
