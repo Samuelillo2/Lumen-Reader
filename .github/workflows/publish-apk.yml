@@ -1,0 +1,111 @@
+name: Publish APK Release
+
+# Este workflow corre en los servidores de GitHub (con acceso completo a
+# internet) para descargar el APK desde Mediafire y publicarlo como un
+# GitHub Release, adjunto a este repositorio. Así la web puede enlazar
+# directo a GitHub para la descarga, sin pasar por Mediafire.
+#
+# Se dispara automáticamente al modificar este archivo, o manualmente
+# desde la pestaña "Actions" del repo (botón "Run workflow"), donde puedes
+# pegar un nuevo enlace de Mediafire para publicar futuras versiones.
+
+on:
+  push:
+    branches:
+      - "arena/01a0e467-lumen-reader"
+    paths:
+      - ".github/workflows/publish-apk.yml"
+  workflow_dispatch:
+    inputs:
+      mediafire_url:
+        description: "URL de la página del archivo en Mediafire"
+        required: true
+        default: "https://www.mediafire.com/file/3yc6xozoefkndn6/LumenReader-v230.0.0.apk/file"
+      version:
+        description: "Versión / tag del release (ej: v230.0.0)"
+        required: true
+        default: "v230.0.0"
+      apk_filename:
+        description: "Nombre del archivo APK"
+        required: true
+        default: "LumenReader-v230.0.0.apk"
+      expected_sha256:
+        description: "SHA-256 esperado (opcional, déjalo vacío para omitir la verificación)"
+        required: false
+        default: "6788b441dfc653d4dc08b0e9bdf3f9aa9cc0902e2e3b4588ebb18feef1e36145"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      MEDIAFIRE_URL: ${{ github.event.inputs.mediafire_url || 'https://www.mediafire.com/file/3yc6xozoefkndn6/LumenReader-v230.0.0.apk/file' }}
+      VERSION: ${{ github.event.inputs.version || 'v230.0.0' }}
+      APK_FILENAME: ${{ github.event.inputs.apk_filename || 'LumenReader-v230.0.0.apk' }}
+      EXPECTED_SHA256: ${{ github.event.inputs.expected_sha256 || '6788b441dfc653d4dc08b0e9bdf3f9aa9cc0902e2e3b4588ebb18feef1e36145' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve direct download link from Mediafire
+        id: resolve
+        run: |
+          set -euo pipefail
+          echo "Fetching page: $MEDIAFIRE_URL"
+          curl -sL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36" "$MEDIAFIRE_URL" -o page.html
+          # El enlace real de descarga está embebido como href del botón de descarga.
+          DIRECT_URL=$(grep -oE 'https://download[0-9]+\.mediafire\.com/[^"'"'"']+' page.html | head -1 || true)
+          if [ -z "$DIRECT_URL" ]; then
+            echo "No se encontró el enlace directo en la página. Guardando page.html como artefacto para depurar."
+            exit 1
+          fi
+          # Des-escapar entidades HTML comunes en la URL
+          DIRECT_URL=$(printf '%s' "$DIRECT_URL" | sed 's/&amp;/\&/g')
+          echo "Direct URL: $DIRECT_URL"
+          echo "direct_url=$DIRECT_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Download APK
+        run: |
+          set -euo pipefail
+          curl -sL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36" \
+            "${{ steps.resolve.outputs.direct_url }}" -o "$APK_FILENAME"
+          ls -la "$APK_FILENAME"
+          file "$APK_FILENAME"
+
+      - name: Verify checksum
+        if: ${{ env.EXPECTED_SHA256 != '' }}
+        run: |
+          set -euo pipefail
+          ACTUAL=$(sha256sum "$APK_FILENAME" | awk '{print $1}')
+          echo "Expected: $EXPECTED_SHA256"
+          echo "Actual:   $ACTUAL"
+          if [ "$ACTUAL" != "$EXPECTED_SHA256" ]; then
+            echo "::error::El SHA-256 del archivo descargado no coincide con el esperado. Abortando para evitar publicar un archivo incorrecto."
+            exit 1
+          fi
+
+      - name: Upload page.html on failure (debug)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mediafire-page-debug
+          path: page.html
+          if-no-files-found: ignore
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: "Lumen Reader ${{ env.VERSION }}"
+          body: |
+            Lumen Reader ${{ env.VERSION }} (Android APK).
+
+            - Descarga directa desde este Release de GitHub.
+            - SHA-256: `${{ env.EXPECTED_SHA256 }}`
+
+            Publicado automáticamente por el workflow `publish-apk.yml`.
+          files: ${{ env.APK_FILENAME }}
+          draft: false
+          prerelease: false

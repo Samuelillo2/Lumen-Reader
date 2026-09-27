@@ -4,7 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lumen Reader · Tu lectura con inteligencia</title>
-<meta name="description" content="Lumen Reader: app de lectura con IA local, mascota Lumo, vocabulario y gamificación. Todo en tu dispositivo, sin servidores.">
+<meta name="description" content="Lumen Reader: app de lectura con IA local, mascota Lumo, vocabulario y gamificación. Todo en tu dispositivo, sin servidores. Descarga el APK oficial gratis.">
+<meta name="theme-color" content="#6c4bd4">
+<link rel="icon" href="images/lumo-hero.png" type="image/png">
+<link rel="apple-touch-icon" href="images/lumo-hero.png">
+<!-- Open Graph / redes sociales -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lumen Reader · Tu lectura con inteligencia">
+<meta property="og:description" content="Lector EPUB/PDF/DOCX con IA local, vocabulario FSRS, gamificación y biblioteca descentralizada. Descarga el APK gratis.">
+<meta property="og:image" content="images/shot-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lumen Reader · Tu lectura con inteligencia">
+<meta name="twitter:description" content="App de lectura con IA local, mascota Lumo y biblioteca descentralizada. Descarga el APK gratis.">
+<meta name="twitter:image" content="images/shot-home.png">
 <style>
   /* ============================================================
      LUMEN READER · Landing page (estilo de lectura)
@@ -42,13 +54,15 @@
   html{scroll-behavior:smooth}
   body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
   a{color:var(--accent);text-decoration:none}
+  img{max-width:100%;display:block}
   .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
 
   /* ---------- Header / nav ---------- */
   header{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
   .nav{display:flex;align-items:center;justify-content:space-between;height:66px;gap:12px}
   .brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:700;font-size:1.18rem;letter-spacing:.2px}
-  .logo{width:36px;height:36px;border-radius:10px;background:var(--accent-grad);display:grid;place-items:center;color:#fff;font-size:1.15rem;box-shadow:var(--shadow-soft)}
+  .logo{width:36px;height:36px;border-radius:10px;background:var(--accent-grad);display:grid;place-items:center;color:#fff;font-size:1.15rem;box-shadow:var(--shadow-soft);overflow:hidden}
+  .logo img{width:100%;height:100%;object-fit:cover}
   .nav-actions{display:flex;align-items:center;gap:8px}
   .nav-links{display:flex;gap:22px;align-items:center}
   .nav-links a{color:var(--ink);font-weight:600;font-size:.95rem;opacity:.85}
@@ -57,6 +71,13 @@
   .icon-btn:hover{border-color:var(--accent)}
   .btn-dl-sm{background:var(--accent-grad);color:#fff!important;opacity:1!important;padding:9px 18px;border-radius:999px;font-weight:700;box-shadow:var(--shadow-soft)}
   .btn-dl-sm:hover{transform:translateY(-1px)}
+  .menu-toggle{display:none}
+
+  /* Menú móvil */
+  .mobile-nav{display:none;flex-direction:column;gap:2px;padding:10px 22px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+  .mobile-nav.open{display:flex}
+  .mobile-nav a{padding:11px 4px;color:var(--ink);font-weight:600;border-bottom:1px solid var(--line)}
+  .mobile-nav a:last-child{border-bottom:none}
 
   /* ---------- Hero ---------- */
   .hero{position:relative;padding:78px 0 64px;overflow:hidden}
@@ -78,26 +99,28 @@
   .btn-sec:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
   .btn-sec.premium{background:linear-gradient(135deg,#ffb400,#ff8a00);color:#fff;border:none;box-shadow:0 10px 26px rgba(255,164,0,.32)}
   .btn-sec.premium:hover{color:#fff;transform:translateY(-2px);box-shadow:0 14px 32px rgba(255,164,0,.42)}
+  .btn-sec[hidden]{display:none}
   .meta-line{display:flex;flex-wrap:wrap;gap:16px;margin-top:26px;color:var(--muted);font-size:.9rem;font-weight:600}
   .meta-line span{display:inline-flex;align-items:center;gap:6px}
   .meta-line .chk{color:#2ecc71;font-weight:800}
   .phone-wrap{position:relative;z-index:1}
-  .phone{aspect-ratio:9/19;max-width:340px;margin:0 auto;border-radius:40px;background:linear-gradient(180deg,var(--card),color-mix(in srgb,var(--card) 70%,#ece7f7));border:10px solid var(--ink);box-shadow:0 30px 60px rgba(30,30,40,.28);overflow:hidden;padding:14px;display:flex;flex-direction:column;gap:12px}
-  .ph-bar{height:6px;width:90px;background:#e3def5;border-radius:99px;margin:2px auto 8px}
-  .ph-tile{border-radius:14px;background:#f0edf9;height:54px}
-  .ph-tile.wide{height:118px;background:var(--accent-grad);display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.2rem}
-  .ph-rows{display:flex;flex-direction:column;gap:8px;flex:1}
-  .ph-rows .r{height:14px;border-radius:6px;background:var(--line)}
-  .ph-rows .r.w50{width:50%}
-  .ph-rows .r.w75{width:75%}
-  .ph-chips{display:flex;gap:8px;flex-wrap:wrap}
-  .ph-chips span{background:color-mix(in srgb,var(--accent-2) 22%,transparent);color:var(--accent-2);font-size:.62rem;font-weight:800;padding:5px 9px;border-radius:99px}
+  .phone{position:relative;aspect-ratio:9/19;max-width:300px;margin:0 auto;border-radius:40px;background:var(--ink);border:10px solid var(--ink);box-shadow:0 30px 60px rgba(30,30,40,.28);overflow:hidden}
+  .phone img{width:100%;height:100%;object-fit:cover;display:block}
+  .phone-float{position:absolute;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 14px;box-shadow:var(--shadow);font-size:.82rem;font-weight:700;display:flex;align-items:center;gap:8px;z-index:2;animation:float 4s ease-in-out infinite}
+  .phone-float.f1{top:8%;left:-18px}
+  .phone-float.f2{bottom:10%;right:-22px;animation-delay:.8s}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  [data-theme="dark"] .phone{border-color:#0c0c11}
 
   /* ---------- Secciones ---------- */
   section{padding:66px 0}
   .sec-tag{color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:1.4px;font-size:.76rem;margin-bottom:12px}
   h2{font-family:var(--serif);font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-.3px;margin-bottom:16px;font-weight:700}
   .lead{color:var(--muted);max-width:660px;margin-bottom:36px;font-size:1.06rem}
+
+  /* Reveal on scroll */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in-view{opacity:1;transform:translateY(0)}
 
   /* Feature cards */
   .features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -107,23 +130,43 @@
   .fcard h3{font-family:var(--serif);font-size:1.1rem;margin-bottom:8px}
   .fcard p{color:var(--muted);font-size:.95rem}
 
-  /* Screenshots */
-  .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:24px}
-  .shot{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-soft);transition:transform .15s}
+  /* Screenshots / storyboard de la app */
+  .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+  .shot{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-soft);transition:transform .15s;position:relative}
   .shot:hover{transform:translateY(-4px)}
   .shot .frame{aspect-ratio:9/19;background:var(--line);display:grid;place-items:center;position:relative;overflow:hidden}
   .shot .frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .shot .step{position:absolute;top:12px;left:12px;background:rgba(20,20,27,.72);color:#fff;font-size:.72rem;font-weight:800;padding:4px 10px;border-radius:999px;z-index:2;backdrop-filter:blur(4px)}
   .shot .cap{padding:14px 16px;font-family:var(--serif);font-size:.95rem;font-weight:600}
   .shot .cap small{display:block;color:var(--muted);font-family:var(--font);font-weight:500;margin-top:3px;font-size:.78rem}
+
+  /* Video / demo */
+  .demo-card{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:28px;padding:34px;box-shadow:var(--shadow-soft)}
+  .demo-visual{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:16/10;background:var(--ink)}
+  .demo-visual img{width:100%;height:100%;object-fit:cover;opacity:.85}
+  .demo-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(108,75,212,.35),rgba(255,159,10,.25))}
+  .demo-play .play-btn{width:66px;height:66px;border-radius:50%;background:#fff;color:var(--accent);display:grid;place-items:center;font-size:1.5rem;box-shadow:0 10px 30px rgba(0,0,0,.35);transition:transform .15s}
+  .demo-card:hover .play-btn{transform:scale(1.08)}
+  .demo-steps{display:flex;flex-direction:column;gap:14px;margin:22px 0 26px}
+  .demo-steps li{display:flex;gap:12px;align-items:flex-start;list-style:none;color:var(--muted);font-size:.95rem}
+  .demo-steps li b{color:var(--ink)}
+  .demo-steps .num{flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent-grad);color:#fff;font-size:.78rem;font-weight:800;display:grid;place-items:center}
 
   /* Download CTA */
   .dl-cta{background:var(--accent-grad);border-radius:28px;padding:56px 40px;color:#fff;text-align:center;position:relative;overflow:hidden}
   .dl-cta h2{color:#fff}
-  .dl-cta .lead{color:rgba(255,255,255,.88)}
+  .dl-cta .lead{color:rgba(255,255,255,.88);margin-left:auto;margin-right:auto;text-align:center}
   .btn-dl.white{background:#fff;color:var(--accent);box-shadow:0 14px 34px rgba(0,0,0,.22)}
   .btn-dl.white:hover{box-shadow:0 18px 40px rgba(0,0,0,.3)}
   .dl-notes{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;margin-top:24px;font-size:.85rem;font-weight:600;color:rgba(255,255,255,.88)}
   .dl-notes span{display:inline-flex;align-items:center;gap:7px}
+  .dl-card{margin-top:30px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:18px;padding:18px 22px;max-width:560px;margin-left:auto;margin-right:auto;text-align:left}
+  .dl-card .row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:.86rem;flex-wrap:wrap}
+  .dl-card .row span:first-child{color:rgba(255,255,255,.75)}
+  .dl-card .row span:last-child{font-weight:700;word-break:break-all;text-align:right}
+  .dl-card .hash{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.72rem}
+  .dl-mirror{margin-top:14px;font-size:.85rem;color:rgba(255,255,255,.85)}
+  .dl-mirror a{color:#fff;text-decoration:underline}
 
   /* Highlight (biblioteca sin dueño) */
   #highlight .wrap{position:relative}
@@ -144,6 +187,7 @@
   footer{border-top:1px solid var(--line);padding:36px 0 46px;text-align:center;color:var(--muted);font-size:.86rem}
   footer .brand{justify-content:center;margin-bottom:10px;color:var(--ink)}
   footer .brand .logo{width:30px;height:30px;font-size:.95rem}
+  footer .foot-links{display:flex;justify-content:center;gap:16px;margin-top:10px;flex-wrap:wrap}
 
   /* responsive */
   @media(max-width:860px){
@@ -151,9 +195,12 @@
     .sub{margin-left:auto;margin-right:auto}
     .cta-row,.meta-line{justify-content:center}
     .nav-links{display:none}
+    .menu-toggle{display:grid}
     .features{grid-template-columns:1fr}
-    .phone{max-width:300px}
-    .dl-cta{padding:44px 24px}
+    .phone{max-width:260px}
+    .phone-float{display:none}
+    .dl-cta{padding:44px 22px}
+    .demo-card{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -164,7 +211,7 @@
      ============================================================ -->
 <header>
   <div class="wrap nav">
-    <div class="brand"><span class="logo" id="nav-logo">📖</span><span id="nav-name">Lumen Reader</span></div>
+    <div class="brand"><span class="logo" id="nav-logo"></span><span id="nav-name">Lumen Reader</span></div>
     <div class="nav-actions">
       <nav class="nav-links">
         <a href="#about" data-i18n="nav_about">Qué es</a>
@@ -175,9 +222,17 @@
       </nav>
       <button class="icon-btn" id="theme-toggle" title="Modo claro/oscuro" aria-label="Modo claro/oscuro">🌙</button>
       <button class="icon-btn" id="lang-toggle" title="Cambiar idioma" aria-label="Cambiar idioma">🌐</button>
+      <button class="icon-btn menu-toggle" id="menu-toggle" title="Menú" aria-label="Abrir menú">☰</button>
       <a class="btn-dl-sm" href="#download" data-i18n="dlShort">Descargar</a>
     </div>
   </div>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="#about" data-i18n="nav_about">Qué es</a>
+    <a href="#features" data-i18n="nav_features">Funciones</a>
+    <a href="#highlight" data-i18n="nav_highlight">Biblioteca</a>
+    <a href="#screenshots" data-i18n="nav_shots">Pantallas</a>
+    <a href="#faq" data-i18n="nav_faq">Preguntas</a>
+  </nav>
 </header>
 
 <!-- ============================================================
@@ -207,16 +262,10 @@
     </div>
 
     <div class="phone-wrap">
+      <div class="phone-float f1">🔥 <span id="float-streak">7 días</span></div>
+      <div class="phone-float f2">🐉 <span id="float-lumo">Lumo</span></div>
       <div class="phone">
-        <div class="ph-bar"></div>
-        <div class="ph-tile wide" id="phone-title" style="background:transparent;border:none;height:150px;padding:0">
-          <img src="images/lumo-hero.png" alt="Lumo" style="width:150px;height:150px;object-fit:contain">
-        </div>
-        <div class="ph-chips" id="phone-chips"></div>
-        <div class="ph-rows">
-          <div class="r w75"></div><div class="r w50"></div><div class="r w75"></div><div class="r w50"></div>
-          <div class="r w75"></div><div class="r"></div>
-        </div>
+        <img src="images/shot-home.png" alt="Pantalla de inicio de Lumen Reader">
       </div>
     </div>
   </div>
@@ -226,7 +275,7 @@
      DE QUÉ TRATA
      ============================================================ -->
 <section id="about" style="background:var(--bg-2);border-top:1px solid var(--line)">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="sec-tag" data-i18n="aboutTag">¿Qué es Lumen Reader?</div>
     <h2 id="about-title"></h2>
     <p class="lead" id="about-text"></p>
@@ -238,7 +287,7 @@
      DESTACADO: BIBLIOTECA SIN DUEÑO
      ============================================================ -->
 <section id="highlight" style="background:var(--bg-2);border-top:1px solid var(--line)">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="sec-tag" id="highlight-tag"></div>
     <h2 id="highlight-title"></h2>
     <p class="lead" id="highlight-text"></p>
@@ -250,7 +299,7 @@
      FUNCIONES
      ============================================================ -->
 <section id="features">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="sec-tag" data-i18n="featuresTag">Funciones</div>
     <h2 id="features-title"></h2>
     <p class="lead" id="features-sub"></p>
@@ -259,10 +308,33 @@
 </section>
 
 <!-- ============================================================
+     DEMO / VIDEO
+     ============================================================ -->
+<section id="demo" style="background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap reveal">
+    <div class="sec-tag" id="demo-tag"></div>
+    <h2 id="demo-title"></h2>
+    <p class="lead" id="demo-sub"></p>
+    <div class="demo-card">
+      <div class="demo-visual">
+        <img src="images/shot-lumo.png" alt="Vista previa del recorrido por Lumen Reader">
+        <a class="demo-play" id="demo-play" href="#" target="_blank" rel="noopener">
+          <span class="play-btn">▶</span>
+        </a>
+      </div>
+      <div>
+        <ol class="demo-steps" id="demo-steps"></ol>
+        <a class="btn-sec" id="demo-cta" href="#screenshots"><span id="demo-cta-text"></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      PANTALLAZOS
      ============================================================ -->
-<section id="screenshots" style="background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div class="wrap">
+<section id="screenshots">
+  <div class="wrap reveal">
     <div class="sec-tag" data-i18n="shotsTag">Pantallas</div>
     <h2 id="shots-title"></h2>
     <p class="lead" id="shots-sub"></p>
@@ -274,7 +346,7 @@
      DESCARGA
      ============================================================ -->
 <section id="download">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="dl-cta">
       <div class="sec-tag" style="color:rgba(255,255,255,.8)" data-i18n="dlTag">Descargar</div>
       <h2 id="dl-title"></h2>
@@ -284,6 +356,8 @@
         <span id="dl-btn-text"></span>
       </a>
       <div class="dl-notes" id="dl-notes"></div>
+      <div class="dl-card" id="dl-card"></div>
+      <div class="dl-mirror" id="dl-mirror"></div>
     </div>
   </div>
 </section>
@@ -292,7 +366,7 @@
      PREGUNTAS FRECUENTES
      ============================================================ -->
 <section id="faq">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="sec-tag" style="text-align:center" data-i18n="faqTag">Ayuda</div>
     <h2 style="text-align:center" id="faq-title"></h2>
     <div class="faq" id="faq-list"></div>
@@ -304,9 +378,14 @@
      ============================================================ -->
 <footer>
   <div class="wrap">
-    <div class="brand"><span class="logo" id="foot-logo">📖</span><span id="foot-name">Lumen Reader</span></div>
+    <div class="brand"><span class="logo" id="foot-logo"></span><span id="foot-name">Lumen Reader</span></div>
     <p data-i18n="foot_copyright">© <span id="year"></span> Lumen Reader. Todos los derechos reservados.</p>
     <p id="foot-privacy" style="margin-top:6px"></p>
+    <div class="foot-links">
+      <a id="foot-tg" href="#" target="_blank" rel="noopener">Telegram</a>
+      <a href="#download">APK</a>
+      <a href="#faq" data-i18n="nav_faq">Preguntas</a>
+    </div>
   </div>
 </footer>
 
@@ -317,21 +396,33 @@
 <script>
 const CONFIG = {
   appName: "Lumen Reader",
-  logoEmoji: "📖",
+  logoImg: "images/lumo-hero.png",
 
   // ---------- ENLACES ----------
-  downloadUrl: "https://www.mediafire.com/file/qmloz46bv685edk/LumenReader-v101.apk/file", // ⬅ APK (no se muestra el alojamiento)
+  // ⬅ APK alojado como Release de GitHub (se sirve directo desde GitHub, sin anuncios ni esperas).
+  downloadUrl: "https://github.com/Samuelillo2/Lumen-Reader/releases/download/v230.0.0/LumenReader-v230.0.0.apk",
+  downloadMirrorUrl: "https://www.mediafire.com/file/3yc6xozoefkndn6/LumenReader-v230.0.0.apk/file", // ⬅ Mirror opcional (Mediafire)
   telegramUrl: "https://t.me/LumenReader",                 // ⬅ Canal de Telegram
   premiumUrl: "http://t.me/send?start=IVyePZifa6hN",       // ⬅ Obtener versión Premium
+  demoVideoUrl: "",                                        // ⬅ Pega aquí tu vídeo (YouTube/MP4) cuando lo grabes. Si está vacío, el botón de reproducir queda oculto.
+
+  // ---------- INFO DEL APK (para la ficha de descarga) ----------
+  apk: {
+    version: "230.0.0",
+    sizeLabel: "38.9 MB",
+    sha256: "6788b441dfc653d4dc08b0e9bdf3f9aa9cc0902e2e3b4588ebb18feef1e36145",
+    updated: "2026-09-27"
+  },
 
   // ---------- PANTALLAZOS ----------
-  // { img: URL, tituloES, notaES, tituloEN, notaEN }
+  // { img: URL local en /images, tituloES, notaES, tituloEN, notaEN }
   screenshots: [
-    { img: "https://keephere.ru/get/xNTx-_B-a8z/o/photo.jpg", tituloES:"Inicio",   notaES:"Bienvenida y tu progreso",       tituloEN:"Home",     notaEN:"Welcome & your progress" },
-    { img: "https://keephere.ru/get/XNTx_B8l28F/o/photo.jpg", tituloES:"Biblioteca", notaES:"Todos tus títulos",            tituloEN:"Library",  notaEN:"All your titles" },
-    { img: "https://keephere.ru/get/zNTx_GWz_PV/o/photo.jpg", tituloES:"Lumo",      notaES:"Tu mascota y habitación",      tituloEN:"Lumo",     notaEN:"Your pet & room" },
-    { img: "https://keephere.ru/get/vNTx_J_5YUs/o/photo.jpg", tituloES:"Logros",    notaES:"XP, niveles y misiones",       tituloEN:"Achievements", notaEN:"XP, levels & quests" },
-    { img: "https://keephere.ru/get/YNTx_OyW_Xz/o/photo.jpg", tituloES:"Vocabulario", notaES:"Palabras y diccionario",      tituloEN:"Vocabulary", notaEN:"Words & dictionary" }
+    { img: "images/shot-home.png",         tituloES:"Inicio",       notaES:"Tu racha, tu meta diaria y el libro que estás leyendo", tituloEN:"Home",         notaEN:"Your streak, daily goal and current book" },
+    { img: "images/shot-library.png",      tituloES:"Biblioteca",   notaES:"Catálogo global descentralizado, sin dueño",            tituloEN:"Library",      notaEN:"Global decentralized catalog, no owner" },
+    { img: "images/shot-reader.png",       tituloES:"Lector + IA",  notaES:"Toca una palabra y añádela a tu vocabulario",           tituloEN:"Reader + AI",  notaEN:"Tap a word and add it to your vocabulary" },
+    { img: "images/shot-lumo.png",         tituloES:"Lumo",         notaES:"Tu mascota crece cada vez que lees",                    tituloEN:"Lumo",         notaEN:"Your pet grows every time you read" },
+    { img: "images/shot-achievements.png", tituloES:"Logros",       notaES:"Niveles, insignias y misiones diarias",                 tituloEN:"Achievements", notaEN:"Levels, badges and daily quests" },
+    { img: "images/shot-vocab.png",        tituloES:"Vocabulario",  notaES:"Repaso espaciado con tarjetas estilo Anki (FSRS)",      tituloEN:"Vocabulary",   notaEN:"Anki-style spaced repetition (FSRS)" }
   ],
 
   // ---------- CONTENIDO EN ESPAÑOL ----------
@@ -345,8 +436,6 @@ const CONFIG = {
     nav_shots: "Pantallas",
     nav_faq: "Preguntas",
     heroMeta: ["100% en tu dispositivo","IA local y privada","Biblioteca sin dueño","Android"],
-    phoneLabel: "Lumen",
-    phoneChips: ["⚡ Energía","🎯 Meta diaria","🏅 XP","🐉 Lumo"],
     dlBtn: "Descargar app",
     tgBtn: "Telegram",
     premBtn: "Versión Premium",
@@ -376,13 +465,29 @@ const CONFIG = {
       { emoji:"🌐", titulo:"Biblioteca descentralizada", texto:"Un catálogo global en Nostr con libros P2P, firma del autor y sin servidor central." },
       { emoji:"☁️", titulo:"Respaldo en la nube", texto:"Copia en Google Drive, Proton o WebDAV; cambia de teléfono sin perder tu progreso." }
     ],
+    demoTag: "Míralo en acción",
+    demoTitle: "Un recorrido rápido por Lumen Reader",
+    demoSub: "Así se siente usar la app día a día: desde abrir tu libro hasta ver crecer a Lumo. Pulsa play cuando publiquemos el vídeo, o recorre las pantallas de abajo mientras tanto.",
+    demoSteps: [
+      "Abres la app y ves tu racha, tu meta diaria y el libro que dejaste a medias.",
+      "Tocas una palabra desconocida: la IA local te da la definición al instante y la manda a tu repaso de vocabulario.",
+      "Lumo gana energía cada minuto que lees y sube de nivel contigo.",
+      "Exploras la biblioteca global descentralizada y descubres libros compartidos por otros lectores.",
+      "Revisas tus logros, misiones diarias y tu progreso de la semana."
+    ],
+    demoCta: "Ver todas las pantallas",
     shotsTag: "Pantallas",
     shotsTitle: "Así se ve Lumen Reader",
-    shotsSub: "Estos son los pantallazos de la aplicación.",
+    shotsSub: "Capturas reales del flujo de uso: inicio, biblioteca, lectura con IA, tu mascota Lumo y tus logros.",
     dlTag: "Descargar",
     dlTitle: "Empieza a leer con Lumen",
-    dlSub: "Descarga Lumen Reader gratis y dale vida a tu hábito de lectura.",
+    dlSub: "Descarga Lumen Reader gratis y dale vida a tu hábito de lectura. El APK se descarga directamente desde GitHub.",
     dlNote: "Archivo de instalación para Android",
+    dlCardVersion: "Versión",
+    dlCardSize: "Tamaño",
+    dlCardUpdated: "Actualizado",
+    dlCardHash: "SHA-256",
+    dlMirror: "¿Problemas para descargar? Prueba el mirror en",
     faqTag: "Ayuda",
     faqTitle: "Preguntas frecuentes",
     faq: [
@@ -390,6 +495,8 @@ const CONFIG = {
       { q:"¿En qué dispositivos funciona?", a:"Lumen Reader está diseñada para Android y se instala como un APK directamente en tu teléfono o tableta." },
       { q:"¿Qué formatos puedo leer?", a:"EPUB, PDF, DOCX y otros. Además puedes leer páginas escaneadas gracias al OCR integrado." },
       { q:"¿Tiene costo?", a:"Es gratuita y completa. Hay una versión Premium con ventajas adicionales (sin anuncios, temas exclusivos, copia en la nube, etc.)." },
+      { q:"¿Es seguro instalar el APK?", a:"Sí. El archivo se aloja directamente en un Release de GitHub de este repositorio, con su hash SHA-256 publicado para que puedas verificar que no fue modificado." },
+      { q:"¿Cómo lo instalo si Android bloquea la instalación?", a:"Android puede pedirte permitir 'orígenes desconocidos' la primera vez. Acepta el permiso solo para tu navegador o gestor de archivos y continúa con la instalación." },
       { q:"¿Qué es la biblioteca descentralizada?", a:"Es un catálogo global que vive en relays públicos de Nostr y se comparte entre pares con BitTorrent, sin servidor central y con la firma de cada autor." },
       { q:"¿Puedo publicar mis propios libros?", a:"Sí. La app te permite publicar en la biblioteca global, gestionar tus publicaciones y generar tu propia vitrina web, además de recibir el 50 % de los anuncios." }
     ],
@@ -408,8 +515,6 @@ const CONFIG = {
     nav_shots: "Screens",
     nav_faq: "FAQ",
     heroMeta: ["100% on-device","Local & private AI","Ownerless library","Android"],
-    phoneLabel: "Lumen",
-    phoneChips: ["⚡ Energy","🎯 Daily goal","🏅 XP","🐉 Lumo"],
     dlBtn: "Download app",
     tgBtn: "Telegram",
     premBtn: "Get Premium",
@@ -439,13 +544,29 @@ const CONFIG = {
       { emoji:"🌐", titulo:"Decentralized library", texto:"A global catalog on Nostr with P2P books, author signature and no central server." },
       { emoji:"☁️", titulo:"Cloud backup", texto:"Backup to Google Drive, Proton or WebDAV; switch phones without losing progress." }
     ],
+    demoTag: "See it in action",
+    demoTitle: "A quick tour of Lumen Reader",
+    demoSub: "This is what daily use feels like: from opening your book to watching Lumo grow. Hit play once the video is live, or browse the screens below meanwhile.",
+    demoSteps: [
+      "Open the app and see your streak, daily goal and the book you left halfway.",
+      "Tap an unknown word: on-device AI gives you the definition instantly and sends it to your vocabulary review.",
+      "Lumo gains energy every minute you read and levels up with you.",
+      "Explore the decentralized global library and discover books shared by other readers.",
+      "Check your achievements, daily quests and this week's progress."
+    ],
+    demoCta: "See all the screens",
     shotsTag: "Screens",
     shotsTitle: "Meet Lumen Reader",
-    shotsSub: "These are screenshots of the app.",
+    shotsSub: "Real screens from the app flow: home, library, AI-assisted reading, your pet Lumo and your achievements.",
     dlTag: "Download",
     dlTitle: "Start reading with Lumen",
-    dlSub: "Download Lumen Reader for free and bring your reading habit to life.",
+    dlSub: "Download Lumen Reader for free and bring your reading habit to life. The APK downloads directly from GitHub.",
     dlNote: "Installation file for Android",
+    dlCardVersion: "Version",
+    dlCardSize: "Size",
+    dlCardUpdated: "Updated",
+    dlCardHash: "SHA-256",
+    dlMirror: "Trouble downloading? Try the mirror on",
     faqTag: "Help",
     faqTitle: "Frequently asked questions",
     faq: [
@@ -453,6 +574,8 @@ const CONFIG = {
       { q:"Which devices does it work on?", a:"Lumen Reader is designed for Android and installs as an APK directly on your phone or tablet." },
       { q:"Which formats can I read?", a:"EPUB, PDF, DOCX and more. You can also read scanned pages thanks to the built-in OCR." },
       { q:"Does it cost anything?", a:"It is free and complete. There is a Premium version with extra benefits (no ads, exclusive themes, cloud backup, etc.)." },
+      { q:"Is it safe to install the APK?", a:"Yes. The file is hosted directly as a GitHub Release of this repository, with its SHA-256 hash published so you can verify it hasn't been modified." },
+      { q:"How do I install it if Android blocks it?", a:"Android may ask you to allow 'unknown sources' the first time. Grant that permission only to your browser or file manager and continue the installation." },
       { q:"What is the decentralized library?", a:"It is a global catalog that lives on public Nostr relays and is shared peer-to-peer with BitTorrent, with no central server and each author's signature." },
       { q:"Can I publish my own books?", a:"Yes. The app lets you publish to the global library, manage your publications and generate your own web showcase, while keeping 50% of the ad revenue." }
     ],
@@ -499,6 +622,14 @@ const CONFIG = {
     applyTheme(cur === "dark" ? "light" : "dark");
   });
 
+  // ---------- Menú móvil ----------
+  $("menu-toggle").addEventListener("click", () => {
+    $("mobile-nav").classList.toggle("open");
+  });
+  document.querySelectorAll("#mobile-nav a").forEach(a=>{
+    a.addEventListener("click", ()=> $("mobile-nav").classList.remove("open"));
+  });
+
   // ---------- Aplicar idioma ----------
   function applyLang(){
     const T = C[lang] || C.es;
@@ -511,16 +642,14 @@ const CONFIG = {
     });
     $("nav-name").textContent = C.appName;
     $("foot-name").textContent = C.appName;
-    $("nav-logo").textContent = C.logoEmoji;
-    $("foot-logo").textContent = C.logoEmoji;
+    $("nav-logo").innerHTML = `<img src="${C.logoImg}" alt="${C.appName}">`;
+    $("foot-logo").innerHTML = `<img src="${C.logoImg}" alt="${C.appName}">`;
 
     // Hero
     $("hero-badge-text").textContent = T.badge;
     const ht = T.heroTitle;
     $("hero-title").innerHTML = ht.replace(/(\S+)\s*$/, '<span class="grad">$1</span>');
     $("hero-sub").textContent = T.heroSub;
-    $("phone-title").textContent = T.phoneLabel || C.appName;
-    $("phone-chips").innerHTML = (T.phoneChips||[]).map(x=>`<span>${x}</span>`).join("");
     $("hero-meta").innerHTML = (T.heroMeta||[]).map(m=>`<span><span class="chk">✓</span> ${m}</span>`).join("");
 
     // Botones enlaces
@@ -550,12 +679,23 @@ const CONFIG = {
         <p>${f.texto}</p>
       </div>`).join("");
 
+    // Demo / video
+    $("demo-tag").textContent = T.demoTag;
+    $("demo-title").textContent = T.demoTitle;
+    $("demo-sub").textContent = T.demoSub;
+    $("demo-steps").innerHTML = (T.demoSteps||[]).map((s,i)=>`
+      <li><span class="num">${i+1}</span><span>${s}</span></li>`).join("");
+    $("demo-cta-text").textContent = T.demoCta;
+    const demoPlay = $("demo-play");
+    if (C.demoVideoUrl) { demoPlay.href = C.demoVideoUrl; demoPlay.removeAttribute("hidden"); }
+    else { demoPlay.setAttribute("hidden",""); }
+
     // Screenshots (usa campos ES/EN)
     $("shots-title").textContent = T.shotsTitle;
     $("shots-sub").textContent = T.shotsSub;
-    $("shots-grid").innerHTML = (C.screenshots||[]).map(s=>`
+    $("shots-grid").innerHTML = (C.screenshots||[]).map((s,i)=>`
       <div class="shot">
-        <div class="frame"><img src="${s.img}" alt="${s.tituloES}" loading="lazy"></div>
+        <div class="frame"><span class="step">0${i+1}</span><img src="${s.img}" alt="${lang==="es"?s.tituloES:s.tituloEN}" loading="lazy"></div>
         <div class="cap">${lang==="es"?s.tituloES:s.tituloEN}<small>${lang==="es"?s.notaES:s.notaEN}</small></div>
       </div>`).join("");
 
@@ -563,6 +703,15 @@ const CONFIG = {
     $("dl-title").textContent = T.dlTitle;
     $("dl-sub").textContent = T.dlSub;
     $("dl-notes").innerHTML = `<span>⬇ ${T.dlNote}</span><span>🤖 Android</span>`;
+    const A = C.apk || {};
+    $("dl-card").innerHTML = `
+      <div class="row"><span>${T.dlCardVersion}</span><span>v${A.version||"—"}</span></div>
+      <div class="row"><span>${T.dlCardSize}</span><span>${A.sizeLabel||"—"}</span></div>
+      <div class="row"><span>${T.dlCardUpdated}</span><span>${A.updated||"—"}</span></div>
+      <div class="row"><span>${T.dlCardHash}</span><span class="hash">${A.sha256||"—"}</span></div>`;
+    $("dl-mirror").innerHTML = C.downloadMirrorUrl
+      ? `${T.dlMirror} <a href="${C.downloadMirrorUrl}" target="_blank" rel="noopener">Mediafire</a>`
+      : "";
 
     // FAQ
     $("faq-title").textContent = T.faqTitle;
@@ -582,7 +731,41 @@ const CONFIG = {
     $("hero-dl").href = dl;
     $("dl-btn").href = dl;
     $("hero-tg").href = C.telegramUrl || "#";
+    $("foot-tg").href = C.telegramUrl || "#";
     $("hero-prem").href = C.premiumUrl || "#";
+    if (!C.premiumUrl) $("hero-prem").setAttribute("hidden","");
+  }
+
+  // ---------- Revelado al hacer scroll ----------
+  function initReveal(){
+    const els = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) { els.forEach(el=>el.classList.add("in-view")); return; }
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if (entry.isIntersecting){ entry.target.classList.add("in-view"); io.unobserve(entry.target); }
+      });
+    }, { threshold: .12 });
+    els.forEach(el=>io.observe(el));
+  }
+
+  // ---------- Datos estructurados (SEO) ----------
+  function injectStructuredData(){
+    const A = C.apk || {};
+    const data = {
+      "@context":"https://schema.org",
+      "@type":"SoftwareApplication",
+      "name": C.appName,
+      "operatingSystem":"Android",
+      "applicationCategory":"BooksApplication",
+      "softwareVersion": A.version || undefined,
+      "fileSize": A.sizeLabel || undefined,
+      "downloadUrl": C.downloadUrl,
+      "offers": { "@type":"Offer", "price":"0", "priceCurrency":"USD" }
+    };
+    const s = document.createElement("script");
+    s.type = "application/ld+json";
+    s.textContent = JSON.stringify(data);
+    document.head.appendChild(s);
   }
 
   // ---------- Iniciar ----------
@@ -591,6 +774,8 @@ const CONFIG = {
   lang = detectLang();
   setLang(lang);
   applyLinks();
+  initReveal();
+  injectStructuredData();
 })();
 </script>
 </body>
